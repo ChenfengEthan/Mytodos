@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/todocss.css">
+    <link rel="stylesheet" href="font/iconfont.css">
+</head>
+<body>
+<aside class="learn">
+    <header>
+        <h3>Javascript</h3>
+        <span class="source-links">
+            <h5>Vanilla JavaScript Example</h5>
+            <a href="#">Source</a>
+        </span>
+    </header>
+    <hr>
+    <article class="quote speech-bubble">
+        <p>JavaScript® (often shortened to JS) is a lightweight, interpreted, object-oriented language with first-class functions, most known as the scripting language for Web pages, but used in many non-browser environments as well such as node.js or Apache CouchDB.</p>
+        <footer>
+            <a href="#">Javascript</a>
+        </footer>
+    </article>
+    <hr>
+    <footer>
+       <em>If you have other helpful links to share, or find any of the links above no longer work, please let us know.</em>
+    </footer>
+</aside>
+<article>
+    <section class="todoapp">
+        <header>
+            <h1>todo</h1>
+            <section>
+                <span><img src="images/arrowdark.png" id="allBtn" ></span>
+                <input type="text" placeholder="What needs to be done?" id="input-todo">
+            </section>
+        </header>
+        <ul id="todos" style="display: block"></ul>
+        <footer class="footer-box">
+            <div>
+                <span id="item-count">
+                    <strong id="count-box">0</strong>
+                      left items
+                </span>
+                <ul id="filtrate">
+                    <li class="btn-current" id="all">All</li>
+                    <li id="active">Active</li>
+                    <li id="complete">Completed</li>
+                </ul>
+                <span id="clear-complete">Clear complete</span>
+            </div>
+        </footer>
+    </section>
+</article>
+<!-- <form action="">
+    <label for="">手机号</label>
+</form> -->
+<img src="images/del.png" alt="" class="del-style">
+<script src="js/myApi.js"></script>
+<script src="js/todo.js"></script>
+<!-- <script src="js/newtodo.js"></script> -->
+</body>
+</html>

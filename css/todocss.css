@@ -1,0 +1,370 @@
+@keyframes fadein{
+    0%{
+        opacity: 0;
+    }
+    25%{
+        opacity: .25;
+    }
+    50%{
+        opacity: .5;
+    }
+    75%{
+        opacity: .75;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+@keyframes fade{
+    0%{
+        opacity: 1;
+    }
+    50%{
+        opacity: .75;
+    }
+}
+* {
+    padding: 0;
+    margin: 0;
+}
+html {
+    background-color: #f5f5f5;
+}
+ul {
+    list-style: none;
+}
+input {
+    outline-style: none;
+    /* border: none; */
+    box-shadow: inset 1px #333;
+}
+p {
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start:  0;
+    margin-inline-end:  0;
+}
+a {
+    text-decoration: none;
+    font-weight: normal;
+    color: #b83f45
+}
+h3 {
+    margin: 10px 0;
+    font-weight: 500;
+    line-height: 1.2;
+    color: #000;
+}
+.learn {
+    width: 272px;
+    padding: 10px 5px;
+    background-color: #FBFBFB;
+    margin: 5px;
+    float: left;
+}
+.learn>header>h3 {
+    font-size: 24px;
+}
+.learn>header>span>h5 {
+    font-size: 13px;
+    font-weight: 400;
+}
+.learn p {
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.3;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.learn >header>h3 {
+    font-size: 24px;
+}
+.source-links >h5 {
+    margin-bottom: 0;
+    font-size: 14px;
+}
+.learn>hr {
+    margin: 20px 0;
+    border: 0;
+    border-top: 1px dashed #c5c5c5;
+    border-bottom: 1px dashed #f7f7f7;
+}
+.quote {
+    position: relative;
+    padding: 10px;
+    border-radius: 5px;
+}
+.quote  p {
+    background-color: rgba(0, 0 , 0, .04);
+    font-style: italic;
+    margin-bottom: 30px;
+}
+.quote>p::before {
+    content: '”';
+    font-size: 50px;
+    opacity: .15;
+    position: absolute;
+    top: -14px;
+    left: 3px;
+}
+.quote>p::after{
+    content: '“';
+    font-size: 50px;
+    opacity: .15;
+    position: absolute;
+    top: 143px;
+    right: 22px;
+}
+.quote >footer>a {
+    position: absolute;
+    right: 10px;
+    top: 190px;
+}
+.quote::after {
+    content: '';
+    position: absolute;
+    top: 80%;
+    right: 30px;
+    border: 13px solid transparent;
+    border-top-color:  rgba(0, 0 , 0, .04);
+}
+.learn>footer {
+    font-size: 14px;
+    font-weight: 300;
+}
+/*todoapp部分  */
+article {
+    display: flex;
+    justify-content: center;
+}
+/*article>section {*/
+/*    box-shadow: 0 1px 0 1px rgba(211,211,211, .5);*/
+/*}*/
+.todoapp  section{
+    position: relative;
+    border-bottom: 2px solid #E6E6E6;
+}
+.todoapp header {
+    width: 550px;
+}
+.todoapp h1 {
+    color:  rgba(175, 47, 47, 0.15);
+    font-size: 100px;
+    font-weight: 500;
+    text-align: center;
+    position: relative;
+}
+.todoapp  section input {
+    box-sizing: border-box;
+    padding:  16px 16px 16px 60px;
+    width: 100%;
+    height: 65px;
+    font-size: 24px;
+    border: none;
+    color: #4d4d4d;
+}
+#todo li{
+    width: 550px;
+}
+.todoapp header img {
+    width: 25px;
+    height: 25px;
+    position: absolute;
+    top: 20px;
+    left: 10px;
+    display: none;
+}
+.todoapp input::placeholder {
+    color: rgba(230,230,230);
+    font-size: 24px;
+}
+.todoapp  footer::before {
+    content: '';
+    display: block;
+    width: 99%;
+    height: 50px;
+    position: absolute;
+    top: 5px;
+    left: 1px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 1px 0 1px rgba(211,211,211, .5);
+    z-index: 0;
+}
+.todoapp  footer {
+    display: none;
+    position: relative;
+    width: 100%;
+    height: 50px;
+    background-color: #fff;
+    border-top: 1px solid rgba(211,211,211, .8);
+}
+.todoapp footer div {
+    height: 50px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 18px 0 0 0;
+    top: 1px;
+    position: relative;
+    z-index: 2;
+    background-color: #fff;
+    box-shadow: 0 1px 0 1px rgba(211,211,211, .5);
+}
+.todoapp  footer::after{
+    content: '';
+    display: block;
+    width: 98%;
+    height: 50px;
+    position: absolute;
+    top: 10px;
+    left: 4px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 1px 0 1px rgba(211,211,211, .5);
+    z-index: -1;
+}
+
+.todoapp footer>div:nth-child(1) {
+    position: absolute;
+    left: 0;
+    z-index: 2;
+    font-weight: 300;
+    font-size: 14px;
+}
+.todoapp footer span strong {
+    font-weight: 300;
+}
+.todoapp footer ul {
+    position: absolute;
+    top: 18px;
+    left: 50%;
+    transform: translateX(-50%) ;
+    z-index: 2;
+}
+.todoapp footer ul li {
+    float: left;
+    margin: 0 8px;
+    font-weight: 300;
+    font-size: 14px;
+}
+.todoapp footer ul li:hover {
+    cursor: pointer;
+}
+#clear-complete {
+    float: right;
+    margin-right: 5px;
+}
+#item-count {
+    margin-left: 5px;
+}
+#clear-complete:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+.btn-current {
+    border: 1px solid #EFD5D5;
+}
+.listyle {
+    width: 550px;
+    height: 65px;
+    line-height: 2em;
+    box-sizing: border-box;
+    padding:  0px 0px 0px 60px;
+    background-color: #fff;
+    position: relative;
+    word-wrap: break-word;
+    border-bottom: 1px solid #EDEDED;
+}
+.listyle-up {
+    width: 550px;
+    height: 65px;
+    line-height: 2em;
+    box-sizing: border-box;
+    padding:  0px 0px 0px 60px;
+    background-color: #fff;
+    position: relative;
+    word-wrap: break-word;
+    border-bottom: 1px solid #EDEDED;
+    box-shadow: inset 0 0 1px 4px rgb(250,215,215) ; 
+}
+/* 隐藏按钮样式 */
+.btnstyle {
+    width: 5px;
+    height: 5px;
+    display: none;
+}
+/* 按钮选中状态样式 */
+.check-status {
+    /* display: inline-block; */
+    position: absolute;
+    left: 5px;
+    top: 50%;
+    width: 40px;
+    transform: translateY(-50%);
+    height: 42px;
+    background-size: 100%;
+    background: url("../images/checked.jpg") center center no-repeat;
+}
+.notcheck-status {
+    /* display: inline-block; */
+    position: absolute;
+    left: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 42px;
+    background-size: 100%;
+    background: url("../images/don-checked.jpg") center center no-repeat;
+}
+.todo-text {
+    word-wrap: break-word;
+    font-size: 20px;
+    height: 65px;
+    padding: 16px 0px;
+    line-height: 33px;
+    width: 100%;
+    color: #4D4D4D;
+    /* box-shadow:  */
+    box-sizing: border-box;
+}
+.todo-text-del {
+    word-wrap: break-word;
+    font-size: 20px;
+    height: 100%;
+    padding: 16px 0px;
+    line-height: 33px;
+    width: 100%;
+    animation: fade .5s;
+    color: #D9D9D9;
+    text-decoration: line-through;
+}
+/* 完成todo */
+.quit-style {
+    width: 65px;
+    height: 100%;
+    font-size: 21px;
+    color: #4d4d4d;
+    border: none;
+}
+/* 删除按钮 */
+.del-style {
+    display: none;
+    width:20px;
+    height: 20px;
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+/* 置顶按钮效果 */
+#up {
+    display: none;
+    position: absolute ;
+    right:40px;
+    top: 50% ;
+    width: 15px;
+    height: 15px;
+    color: red;
+    transform: translateY(-100%);
+}
