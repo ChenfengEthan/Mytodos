@@ -286,7 +286,7 @@ article {
     position: relative;
     word-wrap: break-word;
     border-bottom: 1px solid #EDEDED;
-    box-shadow: inset 0 0 1px 4px rgb(250,215,215) ; 
+    box-shadow: inset 0 0 10px 1px rgb(250,215,215) ; 
 }
 /* 隐藏按钮样式 */
 .btnstyle {
