@@ -1,5 +1,4 @@
 
-    
     let  inputTodo = getElement("#input-todo");//todo输入框
     let  todos = getElement("#todos");//todo列表的ul
     let  footerBox = getElement(".footer-box");//底部按钮盒子
