@@ -205,6 +205,8 @@
             let parent = target.parentNode;
             parent.className = "listyle";
             parent.lastChild.className = "todo-text-del";
+            //使按钮显示
+            // target.parentNode.children[2].style.display = "none";
             let firstFinsh = 0;//第一个已完成的位置
             //遍历找第一个已完成的位置
             for(let i = 0; i < todos.children.length; i++) {
@@ -231,7 +233,7 @@
             if(firstFinsh == todos.children.length-1) {
                 // exchange(firstFinsh,currentId,todoObjs.data);
                 todoObjs.data.push(todoObjs.data.splice(currentId,1)[0]);
-                todos.appendChild(parent);
+                todos.appendChild(todos.children[currentId]);
             }else {
                 // exchange(firstFinsh,currentId,todoObjs.data);
                 todoObjs.data.push(todoObjs.data.splice(currentId,1)[0]);
@@ -268,6 +270,7 @@
             let localTodo = localStorage.getItem('todolist');
             let todoObjs = JSON.parse(localTodo);
             let parent = target.parentNode;
+            // target.parentNode.children[2].style.display = "block";
             parent.lastChild.className = "todo-text";
             parent.className = "listyle";
             let firstFinsh = 0;//第一个已完成的位置
@@ -467,7 +470,7 @@
                     localStorage.setItem("todolist",JSON.stringify(localTodo));
                }
                else if(parent.className === "listyle-up") {
-                    target.style.display = "none";
+                    target.style.display = "";
                     parent.className = "listyle";
                     let localTodo = JSON.parse(localStorage.getItem('todolist'));
                     let data = localTodo.data;
@@ -485,10 +488,13 @@
                     if(firstFinsh == todos.children.length-1) {
                         // exchange(firstFinsh,currentId,todoObjs.data);
                         data.push(data.splice(currentId,1)[0]);
-                        todos.insertBefore(parent,todos.children[firstFinsh]);
+                        todos.appendChild(todos.children[firstFinsh]);
                     }else {
-                        exchange(firstFinsh,currentId,data);
                         todos.insertBefore(parent,todos.children[firstFinsh]);
+                        console.log(3333);
+                        data.splice(firstFinsh,0,data.slice(currentId,currentId+1)[0]);
+                        data.splice(currentId,1);
+                        // todos.insertBefore(todos.data[currentId],todos.children[firstFinsh]);
                     }
                     localStorage.setItem("todolist",JSON.stringify(localTodo));
                }
