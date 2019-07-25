@@ -37,7 +37,7 @@
         for(let i = 0;i < todoArray.length; i++) {
             let content = todoArray[i].content;
             let status = todoArray[i].status;
-            let id = todoArray[i].id;
+            let id = i;
             let upStatus = todoArray[i].upStatus;
             creatTree(content,status,id,upStatus,false);
             todoNum();
@@ -79,6 +79,7 @@
         btn.id = status;
         if(upStatus == true) {
             li.className = "listyle-up"
+            i.style.display = "block";
         }else if(upStatus == false) {
             li.className = "listyle"
         }
@@ -112,6 +113,7 @@
             li.setAttribute('data-status','no-check')
         }
         // todos.appendChild(li);
+        //添加todo到已完成的前面
         if(todos.children.length > 0) {
             for(let i = 0; i < todos.children.length; i++) {
                 if(todos.children[i].getAttribute("data-status") == "check") {
@@ -147,11 +149,20 @@
         //存储创建的todo到localstorage
         console.log(todos.lastChild);
         if(localStorage.getItem("todolist")) {
-            let localTodo = JSON.parse(localStorage.getItem('todolist'));
-            localTodo.data.push({id: todos.lastChild.id,content:text,status:'no-check',upStatus:false});
+            let localTodo = JSON.parse(localStorage.getItem("todolist"));
+            let newTodo = {id: todos.children.length-1+localTodo.delNum,content:text,status:'no-check',upStatus:false};
+            let inputPosition = localTodo.data.length;
+            for(let i = 0;i < localTodo.data.length; i++) {
+                if(localTodo.data[i].status == "check") {
+                    inputPosition = i;
+                }
+            }
+            localTodo.data.splice(inputPosition,0,newTodo);
+            // localTodo.data.push({id: todos.children.length-1+localTodo.delNum,content:text,status:'no-check',upStatus:false});
             localStorage.setItem('todolist',JSON.stringify(localTodo));
         }else {
-            todoArray.push({id: "0",content:text,status:'no-check',upStatus:false});
+            let newTodo = {id: 0,content:text,status:'no-check',upStatus:false};
+            todoArray.push(newTodo);
             console.log("diyi");
             dataObj.data = todoArray;
             localStorage.setItem('todolist',JSON.stringify(dataObj));
@@ -189,28 +200,47 @@
         let target = e.target || e.srcElement;
         if (target.className === "notcheck-status" ) {
             target.className = "check-status";
-            let id = target.parentNode.id;
             let localTodo = localStorage.getItem('todolist');
             let todoObjs = JSON.parse(localTodo);
             let parent = target.parentNode;
-            //使完成的todo放到下面
+            parent.className = "listyle";
+            parent.lastChild.className = "todo-text-del";
+            let firstFinsh = 0;//第一个已完成的位置
+            //遍历找第一个已完成的位置
             for(let i = 0; i < todos.children.length; i++) {
                 if(todos.children[i].getAttribute("data-status") == "check") {
-                    todos.insertBefore(parent,todos.children[i]);
+                    firstFinsh = i;
                     break; 
                 }else {
-                    todos.appendChild(parent,todos.children.lastChild);
+                    firstFinsh = todos.children.length-1;
                 }
             }
-            //找出对应id的数据
-            for(let i = 0;i < todoObjs.data.length;i++) {
-                if(todoObjs.data[i].id == id) {
-                    todoObjs.data[i].status = 'check';
-                }
-            }
-            localStorage.setItem('todolist',JSON.stringify(todoObjs));
+            //更改li的选中状态
+            parent.setAttribute("data-status","check");
+            //更改li上的标识
             target.parentNode.setAttribute('data-status','check');
-            target.nextSibling.nextSibling.className = "todo-text-del";
+            parent.lastChild.className = "todo-text-del";
+            console.log(todos.children);
+            let currentId = [].indexOf.call(todos.children,parent);//当前元素 的索引值
+            console.log(currentId);
+            //更改todo的status状态
+            todoObjs.data[currentId].upStatus = false;
+            todoObjs.data[currentId].status = "check";
+            //交换两数据的位置
+            //使完成的todo放到下面          
+            if(firstFinsh == todos.children.length-1) {
+                // exchange(firstFinsh,currentId,todoObjs.data);
+                todoObjs.data.push(todoObjs.data.splice(currentId,1)[0]);
+                todos.appendChild(parent);
+            }else {
+                // exchange(firstFinsh,currentId,todoObjs.data);
+                todoObjs.data.push(todoObjs.data.splice(currentId,1)[0]);
+                // todoObjs.data.splice(currentId-1,0,todoObjs.data.splice(currentId,1)[0]);
+                todos.appendChild(todos.children[currentId]);
+            }
+            //更新数据
+            localStorage.setItem('todolist',JSON.stringify(todoObjs));
+            //如果当前按钮处于active状态，隐藏刚刚完成的todo
             for(let i = 0;i < filtrate.children.length;i ++) {
                 if(filtrate.children[i].className === 'btn-current' && filtrate.children[i].id === 'active') {
                     hide(target.parentNode);
@@ -233,26 +263,44 @@
         }else if (target.className === "check-status" ) {
             target.className = "notcheck-status";
             target.parentNode.setAttribute('data-status','no-check');
-            target.nextSibling.nextSibling.className = "todo-text";
+            target.parentNode.lastChild.className = "todo-text";
             //当前元素的id
-            let id = target.parentNode.id;
             let localTodo = localStorage.getItem('todolist');
             let todoObjs = JSON.parse(localTodo);
             let parent = target.parentNode;
-            //使元素回到顶部
-            let idx = 0;//要替换数据的ID
+            parent.lastChild.className = "todo-text";
+            parent.className = "listyle";
+            let firstFinsh = 0;//第一个已完成的位置
+            parent.setAttribute("data-status","no-check");
+            //遍历找第一个已完成的位置
             for(let i = 0; i < todos.children.length; i++) {
                 if(todos.children[i].getAttribute("data-status") == "check") {
-                    todos.insertBefore(parent,todos.children[i]);
-                    idx = todos.children[i-1].id;
+                    firstFinsh = i;
                     break; 
+                }else {
+                    firstFinsh = todos.children.length-1;
                 }
             }
-            //找出对应id的数据
+            //更改选中状态
+            console.log(firstFinsh);
+            parent.setAttribute("data-status","no-check");
+            let currentId = [].indexOf.call(todos.children,parent);//当前元素 的索引值
+             //更改todo的status状态
+            todoObjs.data[currentId].status = "no-check";
+            todoObjs.data[currentId].upStatus = false;
+            console.log(currentId);
+            //更新状态       
             for(let i = 0;i < todoObjs.data.length;i++) {
-                if(todoObjs.data[i].id == id) {
-                    todoObjs.data[i].status = 'no-check';
-                }
+                todoObjs.data[currentId].status = 'no-check';
+            }
+            //位置修改 
+            if(firstFinsh == todos.children.length-1) {
+                todos.appendChild(parent);
+                todoObjs.data.push(todoObjs.data.splice(currentId-1,1)[0]);
+            }else {
+                todos.insertBefore(parent,todos.children[firstFinsh]);
+                todoObjs.data.splice(firstFinsh,0,todoObjs.data.slice(currentId,currentId+1)[0]);
+                todoObjs.data.splice(currentId+1,1);
             }
             localStorage.setItem('todolist',JSON.stringify(todoObjs));
             todoNum();
@@ -339,11 +387,12 @@
                 parent.lastChild.onblur = function() {
                     parent.firstChild.style.display = 'block'; 
                     inputToDiv(parent.lastChild);
-                    if(parent.lastChild.innerText ==="") {
-                        delLocalTodo(parent.id);//删除localstorage的todo
+                    if(parent.lastChild.innerText.trim() ==="") {
+                        delLocalTodo(nondeIndexOf(todos,parent));//删除localstorage的todo
                         parent.parentNode.removeChild(parent);
                     }
                 }
+                todoNum();
             }
         }
     }
@@ -363,7 +412,7 @@
                 parent.firstChild.style.display = 'block'; 
                 inputToDiv(target);
                 if(parent.lastChild.innerText =='') {
-                    let todoId = parent.id
+                    let todoId = nondeIndexOf(todos,parent);
                     delLocalTodo(todoId);//删除localstorage的todo
                     parent.parentNode.removeChild(parent);
                 }
@@ -373,12 +422,7 @@
     //删除todo
     function delLocalTodo(todoId) {
         let localTodo = JSON.parse(localStorage.getItem('todolist'));
-        for(let i = 0;i < localTodo.data.length;i++) {
-            if(localTodo.data[i].id == todoId) {
-                console.log(todoId);
-                localTodo.data.splice(i,1);
-            }
-        }
+        localTodo.data.splice(todoId,1);
         delNum++;
         localTodo.delNum = delNum;
         localStorage.setItem('todolist',JSON.stringify(localTodo));
@@ -389,43 +433,62 @@
         if(target.tagName === 'DIV' || target.tagName ==='LABEL') {
             let parent = target.parentNode;
             parent.children[1].style.display = 'block';
-            parent.children[2].style.display = 'block';
         }else if(target.tagName === 'LI') {
             target.children[1].style.display = 'block';
-            target.children[2].style.display = 'block';
         }else if(target.tagName === 'IMG') {
             target.style.display = 'block';
             target.onclick = function() {
                 let delLi = target.parentNode;
                 let parent = delLi.parentNode;
-                let todoId = delLi.id;
+                let todoId =nondeIndexOf(todos,delLi);
                 delLocalTodo(todoId);
                 parent.removeChild(delLi);
                 todoNum();
             }
         }else if(target.tagName === "I") {
-            target.style.display = "block";
             let parent = target.parentNode;
+            let firstFinsh = 0;
+            //获取当前元素索引值
+            let currentId = [].indexOf.call(todos.children,parent);
             target.onclick = function() {
+                //样式修改&顺序调换
                if(parent.className === "listyle") {
+                   let localTodo = JSON.parse(localStorage.getItem('todolist'));
+                   let data = localTodo.data;
+                   if(data[currentId].status == "check") {
+                       return false;
+                   }else {
+                       target.style.display = "block";
+                   }
                     parent.className = "listyle-up";
-                    let localTodo = JSON.parse(localStorage.getItem('todolist'));
-                    let data = localTodo.data;
-                    for(let i = 0;i < data.length;i++) {
-                        if(data[i].id == parent.id) {
-                            data[i].upStatus = true;
-                        }
-                    }
+                    data[currentId].upStatus = true;   
+                    data.unshift(data.splice(currentId,1)[0]);
+                    todos.insertBefore(parent,todos.children[0]);
                     localStorage.setItem("todolist",JSON.stringify(localTodo));
                }
                else if(parent.className === "listyle-up") {
+                    target.style.display = "none";
                     parent.className = "listyle";
                     let localTodo = JSON.parse(localStorage.getItem('todolist'));
                     let data = localTodo.data;
-                    for(let i = 0;i < data.length;i++) {
-                        if(data[i].id == parent.id) {
-                            data[i].upStatus = false;
+                    data[currentId].upStatus = false;
+                    //获取第一个完成的索引值
+                    for(let i = 0; i < todos.children.length; i++) {
+                        if(todos.children[i].getAttribute("data-status") == "check") {
+                            firstFinsh = i;
+                            break; 
+                        }else {
+                            firstFinsh = todos.children.length-1;
                         }
+                    }
+                    //元素回到第一个已完成的顶部        
+                    if(firstFinsh == todos.children.length-1) {
+                        // exchange(firstFinsh,currentId,todoObjs.data);
+                        data.push(data.splice(currentId,1)[0]);
+                        todos.insertBefore(parent,todos.children[firstFinsh]);
+                    }else {
+                        exchange(firstFinsh,currentId,data);
+                        todos.insertBefore(parent,todos.children[firstFinsh]);
                     }
                     localStorage.setItem("todolist",JSON.stringify(localTodo));
                }
@@ -439,11 +502,9 @@
         if(target.tagName === 'DIV' || target.tagName ==='LABEL') {
             let parent = target.parentNode;
             parent.children[1].style.display = 'none';
-            parent.children[2].style.display = 'none';
         }else if(target.tagName === 'LI') {
             target.children[1].style.display = 'none';
-            target.children[2].style.display = 'none';
-        }  
+        }
     })
     //按钮高亮&筛选功能
     function btnLight(id,target) {
@@ -516,14 +577,14 @@
                 let localTodos = JSON.parse(localStorage.getItem('todolist'));
                 for(let k = 0;k < localTodos.length;k++) {
                     localTodos.data[k].status = 'no-check';
-                    localTodos.data[k].allselect = 'false'
+                    localTodos.data[k].allselect = 'false';
                 }
                 localStorage.setItem('todolist',JSON.stringify(localTodos));
                 // localStorage.setItem('allselect',false);
+                todoNum();
                 
             }
         }
-        todoNum();
         //重新判断清除已完成按钮的状态
         if(countBox.innerText == 0){
             console.log(8);
@@ -544,7 +605,7 @@
         }
         for(let k = delId.length-1;k >= 0; k--) {
             // 为了防止删除元素后长度改变，采用递减的方法来解决
-            localTodo.data.splice(delId[k],delId[k]+1);
+            localTodo.data.splice(delId[k],1);
             localStorage.setItem('todolist',JSON.stringify(localTodo));
             todos.removeChild(childs[delId[k]]);
         }

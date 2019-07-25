@@ -120,3 +120,20 @@
         }
         ele.addEventListener(event,func,isbubbling)
     }
+    function nondeIndexOf(parent,target) {
+        for(let i = 0;i < parent.children.length;i++) {
+            if(parent.children[i] === target) {
+                return i;
+            }else {
+                return false;
+            }
+        }
+    }
+    function exchange(id1,id2,list) {
+        temp1 = list[id1];
+        temp2 = list[id2];
+        console.log(temp1);
+        console.log(temp2);
+        list.splice(id1,1,temp2);
+        list.splice(id2,1,temp1);
+    } 
